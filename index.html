@@ -519,11 +519,14 @@
         </template>
       </div>
 
-      <!-- Modal -->
-      <div x-show="open" x-cloak x-transition.opacity
+      <!-- Modal. Hidden by default via inline style + x-cloak so it
+           cannot appear on first paint. Alpine swaps display:none for
+           display:flex once both `open` and `cs` are truthy. -->
+      <div x-show="open &amp;&amp; cs" x-cloak x-transition.opacity
+           style="display:none;"
            class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
            @click.self="open=false" @keydown.escape.window="open=false">
-        <div class="bg-white rounded-2xl max-w-2xl w-full p-7 relative" x-show="open" x-transition>
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-7 relative" x-show="open &amp;&amp; cs" x-transition>
           <button @click="open=false" class="absolute top-4 right-4 text-ink/50 hover:text-navy">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" d="M6 6L18 18M6 18L18 6"/></svg>
           </button>
