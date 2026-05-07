@@ -1,0 +1,7 @@
+# Netlify redirects file
+# Force all traffic to https + the canonical domain (uncomment after domain set up)
+# http://lakeledermancostseg.com/*    https://lakeledermancostseg.com/:splat   301!
+# https://www.lakeledermancostseg.com/* https://lakeledermancostseg.com/:splat 301!
+
+# Catch-all 404 -> home (single-page site)
+/*    /index.html    200

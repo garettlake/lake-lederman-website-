@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- ===========================================================
+       LAKE & LEDERMAN COST SEGREGATION - Marketing Website
+       Single-file HTML site. Tailwind CSS + Alpine.js (CDN-loaded).
+       Mobile-first responsive. Netlify-deploy ready.
+
+       LEARNING NOTES (for Garett, new to coding):
+       - <head> = page metadata, browser tells, links to libraries
+       - <body> = everything visible on screen
+       - "class=" attributes are Tailwind utility classes (styling)
+       - "x-data", "x-model", "x-show" etc. are Alpine.js directives
+         (Alpine handles all our interactivity: clicks, form state,
+          progress bars). Think of Alpine as a tiny version of React.
+       =========================================================== -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO meta tags. Search engines and social cards read these. -->
+  <title>Lake &amp; Lederman Cost Segregation | Nevada's Premier Cost Segregation Specialists</title>
+  <meta name="description" content="IRS-compliant cost segregation studies for Nevada commercial and multifamily real estate. CPA + Engineer team. Henderson, NV.">
+  <meta name="keywords" content="cost segregation, Nevada cost segregation, Henderson CPA, real estate tax savings, depreciation, IRS Pub 5653, Form 3115">
+  <meta name="author" content="Lake &amp; Lederman Cost Segregation">
+  <meta name="robots" content="index,follow">
+
+  <!-- Open Graph (Facebook, LinkedIn share preview) -->
+  <meta property="og:title" content="Lake &amp; Lederman Cost Segregation">
+  <meta property="og:description" content="Nevada's Premier Cost Segregation Specialists. Accelerate depreciation, maximize cash flow.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lakeledermancostseg.com">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lake &amp; Lederman Cost Segregation">
+
+  <!-- Tailwind CSS - styling library, loaded from CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind config: defines our brand colors so we can write
+       e.g. "bg-navy" or "text-gold" in class attributes below -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:      '#0B2545',
+            'navy-2':  '#13315C',
+            gold:      '#C8A84B',
+            'gold-2':  '#A88A2D',
+            cream:     '#F5EFD9',
+            ink:       '#1A1A1A',
+          },
+          fontFamily: {
+            serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Alpine.js - interactivity library, loaded from CDN.
+       The "defer" attribute means it loads after HTML parses. -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js" defer></script>
+
+  <!-- A few custom CSS rules. We use Tailwind for almost everything,
+       but a few tweaks (smooth scroll, hero gradient) live here. -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-feature-settings: "kern", "liga"; }
+    .hero-gradient {
+      background:
+        linear-gradient(135deg, rgba(11,37,69,0.92) 0%, rgba(19,49,92,0.88) 100%),
+        radial-gradient(circle at 80% 20%, rgba(200,168,75,0.15) 0%, transparent 60%);
+    }
+    /* fancy underline for headings */
+    .heading-underline::after {
+      content: ""; display: block; width: 64px; height: 3px;
+      background: #C8A84B; margin-top: 12px;
+    }
+    .heading-underline-center::after {
+      content: ""; display: block; width: 64px; height: 3px;
+      background: #C8A84B; margin: 12px auto 0;
+    }
+    /* hide the <details> default arrow */
+    summary::-webkit-details-marker { display:none; }
+    summary { list-style: none; cursor: pointer; }
+    /* smooth fade-in when toggled by Alpine */
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+
+<body class="bg-white text-ink antialiased">
+
+<!-- ============== TOP NAV ============== -->
+<header
+  x-data="{ open:false, scrolled:false }"
+  @scroll.window="scrolled = (window.scrollY > 20)"
+  class="fixed top-0 inset-x-0 z-50 transition-all"
+  :class="scrolled ? 'bg-navy/95 backdrop-blur shadow-lg' : 'bg-navy'"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo / brand -->
+      <a href="#home" class="flex items-center gap-3">
+        <!-- Inline SVG logo: a stylized "LL" monogram in gold -->
+        <svg viewBox="0 0 40 40" class="w-9 h-9" aria-hidden="true">
+          <rect width="40" height="40" rx="6" fill="#C8A84B"/>
+          <text x="50%" y="55%" text-anchor="middle"
+                font-family="Georgia, serif"
+                font-size="22" font-weight="700" fill="#0B2545"
+                dominant-baseline="middle">L&amp;L</text>
+        </svg>
+        <span class="text-white font-serif">
+          <span class="block text-sm leading-none font-semibold">Lake &amp; Lederman</span>
+          <span class="block text-[10px] tracking-widest text-gold uppercase">Cost Segregation</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm text-white/90">
+        <a href="#services"     class="hover:text-gold transition">Services</a>
+        <a href="#process"      class="hover:text-gold transition">Process</a>
+        <a href="#case-studies" class="hover:text-gold transition">Case Studies</a>
+        <a href="#resources"    class="hover:text-gold transition">Resources</a>
+        <a href="#dashboard"    class="hover:text-gold transition">Startup Dashboard</a>
+        <a href="#blog"         class="hover:text-gold transition">Blog</a>
+        <a href="#about"        class="hover:text-gold transition">About</a>
+        <a href="#contact"
+           class="px-4 py-2 rounded-md bg-gold text-navy font-semibold hover:bg-gold-2 transition">
+           Free Consultation
+        </a>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button @click="open = !open" class="lg:hidden text-white p-2"
+              aria-label="Toggle menu">
+        <svg x-show="!open"  class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg x-show="open" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown nav -->
+    <nav x-show="open" x-cloak x-transition
+         class="lg:hidden pb-4 space-y-2 text-white/90">
+      <a href="#services"     @click="open=false" class="block py-1">Services</a>
+      <a href="#process"      @click="open=false" class="block py-1">Process</a>
+      <a href="#case-studies" @click="open=false" class="block py-1">Case Studies</a>
+      <a href="#resources"    @click="open=false" class="block py-1">Resources</a>
+      <a href="#dashboard"    @click="open=false" class="block py-1">Startup Dashboard</a>
+      <a href="#blog"         @click="open=false" class="block py-1">Blog</a>
+      <a href="#about"        @click="open=false" class="block py-1">About</a>
+      <a href="#contact"      @click="open=false"
+         class="inline-block mt-2 px-4 py-2 rounded-md bg-gold text-navy font-semibold">
+        Free Consultation
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============== HERO + ROI CALCULATOR ============== -->
+<section id="home" class="hero-gradient pt-28 pb-20 lg:pt-36 lg:pb-28 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Left: pitch copy -->
+    <div class="text-white">
+      <p class="inline-block text-xs uppercase tracking-[0.2em] text-gold border border-gold/40 px-3 py-1 rounded-full">
+        Nevada's Premier Cost Segregation Specialists
+      </p>
+      <h1 class="mt-6 font-serif text-4xl sm:text-5xl lg:text-6xl leading-tight">
+        Accelerate Depreciation.<br>
+        <span class="text-gold">Maximize Cash Flow.</span>
+      </h1>
+      <p class="mt-6 text-lg text-white/85 max-w-xl">
+        IRS-compliant cost segregation studies for commercial and
+        multifamily real estate &mdash; engineered by a licensed CPA
+        and Professional Engineer team based in Henderson, NV.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#contact"
+           class="px-6 py-3 bg-gold text-navy font-semibold rounded-md hover:bg-gold-2 transition">
+          Schedule Free Property Review
+        </a>
+        <a href="#process"
+           class="px-6 py-3 border border-white/40 text-white rounded-md hover:bg-white/10 transition">
+          See Our Process
+        </a>
+      </div>
+
+      <!-- Trust strip -->
+      <div class="mt-10 flex flex-wrap gap-6 text-xs text-white/70 uppercase tracking-wider">
+        <span>&#10003; ASCSP Aligned</span>
+        <span>&#10003; IRS Pub 5653 Compliant</span>
+        <span>&#10003; $1M+ E&amp;O Insured</span>
+        <span>&#10003; Henderson, NV</span>
+      </div>
+    </div>
+
+    <!-- Right: ROI calculator -->
+    <!-- Alpine x-data sets up a tiny "component" with reactive variables.
+         Anything bound with x-model auto-updates the displayed result. -->
+    <div
+      x-data="{
+        propertyValue: 2000000,
+        landRatio: 20,
+        propertyType: 'commercial',
+        marginalRate: 37,
+        get buildingBasis() {
+          return Math.max(0, this.propertyValue * (1 - this.landRatio/100));
+        },
+        get reclassRate() {
+          // Typical ranges by property type, conservatively chosen.
+          const r = { commercial: 0.22, multifamily: 0.28, hotel: 0.32, retail: 0.25, industrial: 0.18, office: 0.20 };
+          return r[this.propertyType] || 0.22;
+        },
+        get reclassified() { return this.buildingBasis * this.reclassRate; },
+        // First-year tax-deferral benefit, illustrative:
+        // assumes accelerated property (5/15-yr) realized year 1 vs.
+        // 39-yr SL baseline. Conservative 0.85 NPV factor applied.
+        get firstYearSavings() {
+          return this.reclassified * (this.marginalRate/100) * 0.85;
+        },
+        get tenYearNpv() {
+          // Simple illustrative 10-yr time-value benefit at 6% discount.
+          return this.firstYearSavings * 1.55;
+        },
+        fmt(n) {
+          return n.toLocaleString('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+        }
+      }"
+      class="bg-white rounded-xl shadow-2xl p-6 sm:p-8"
+    >
+      <div class="flex items-center justify-between">
+        <h3 class="font-serif text-2xl text-navy">Tax Savings Calculator</h3>
+        <span class="text-[10px] uppercase tracking-widest text-gold-2">Illustrative</span>
+      </div>
+      <p class="mt-1 text-xs text-ink/60">
+        Estimate first-year acceleration. Not tax advice &mdash; final
+        results depend on a qualified study and your tax situation.
+      </p>
+
+      <!-- Inputs -->
+      <div class="mt-6 space-y-5 text-sm">
+        <div>
+          <label class="flex justify-between font-medium text-navy">
+            <span>Property purchase price</span>
+            <span x-text="fmt(propertyValue)" class="text-gold-2"></span>
+          </label>
+          <input type="range" min="250000" max="25000000" step="50000"
+                 x-model.number="propertyValue"
+                 class="w-full mt-2 accent-gold">
+        </div>
+
+        <div>
+          <label class="flex justify-between font-medium text-navy">
+            <span>Estimated land allocation</span>
+            <span x-text="landRatio + '%'" class="text-gold-2"></span>
+          </label>
+          <input type="range" min="5" max="40" step="1"
+                 x-model.number="landRatio"
+                 class="w-full mt-2 accent-gold">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <label class="block">
+            <span class="font-medium text-navy">Property type</span>
+            <select x-model="propertyType"
+                    class="mt-1 block w-full rounded-md border-gray-300 border p-2 text-sm">
+              <option value="commercial">Commercial</option>
+              <option value="multifamily">Multifamily</option>
+              <option value="hotel">Hotel / Hospitality</option>
+              <option value="retail">Retail</option>
+              <option value="office">Office</option>
+              <option value="industrial">Industrial</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="font-medium text-navy">Marginal tax rate</span>
+            <select x-model.number="marginalRate"
+                    class="mt-1 block w-full rounded-md border-gray-300 border p-2 text-sm">
+              <option value="24">24%</option>
+              <option value="32">32%</option>
+              <option value="35">35%</option>
+              <option value="37" selected>37%</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="mt-6 grid grid-cols-2 gap-3">
+        <div class="bg-cream rounded-lg p-4">
+          <div class="text-xs uppercase tracking-wider text-gold-2">Reclassified Basis</div>
+          <div class="font-serif text-2xl text-navy mt-1" x-text="fmt(reclassified)"></div>
+        </div>
+        <div class="bg-cream rounded-lg p-4">
+          <div class="text-xs uppercase tracking-wider text-gold-2">Est. Yr-1 Savings</div>
+          <div class="font-serif text-2xl text-navy mt-1" x-text="fmt(firstYearSavings)"></div>
+        </div>
+      </div>
+      <div class="mt-3 bg-navy text-white rounded-lg p-4 text-center">
+        <div class="text-xs uppercase tracking-wider text-gold">Estimated 10-Year NPV Benefit</div>
+        <div class="font-serif text-3xl mt-1" x-text="fmt(tenYearNpv)"></div>
+      </div>
+
+      <a href="#contact"
+         class="mt-6 block text-center px-5 py-3 bg-navy text-white rounded-md font-semibold hover:bg-navy-2 transition">
+        Get a Real Quote &rarr;
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== TRUST / METRICS BAND ============== -->
+<section class="bg-cream py-10 border-y border-gold/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div>
+      <div class="font-serif text-3xl text-navy">20+</div>
+      <div class="text-xs uppercase tracking-widest text-ink/60 mt-1">Years Combined Experience</div>
+    </div>
+    <div>
+      <div class="font-serif text-3xl text-navy">$1M+</div>
+      <div class="text-xs uppercase tracking-widest text-ink/60 mt-1">E&amp;O Coverage</div>
+    </div>
+    <div>
+      <div class="font-serif text-3xl text-navy">CPA + P.E.</div>
+      <div class="text-xs uppercase tracking-widest text-ink/60 mt-1">Dual-Discipline Team</div>
+    </div>
+    <div>
+      <div class="font-serif text-3xl text-navy">100%</div>
+      <div class="text-xs uppercase tracking-widest text-ink/60 mt-1">IRS Pub 5653 Aligned</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICES ============== -->
+<section id="services" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">What We Do</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline">
+        Engineering-Based Cost Segregation Studies
+      </h2>
+      <p class="mt-6 text-lg text-ink/75">
+        Every study is built on a Detailed Engineering Approach &mdash;
+        the IRS&rsquo;s preferred methodology &mdash; combining a
+        professional engineer&rsquo;s site analysis with CPA-grade tax
+        reporting.
+      </p>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- service card 1 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">1</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">New Acquisition Studies</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          Property purchased in the current tax year. Reclassify 5-, 7-,
+          and 15-year personal property and land improvements to
+          accelerate depreciation in year one.
+        </p>
+      </div>
+      <!-- service card 2 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">2</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">Look-Back Studies</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          For property placed in service in prior years. We file Form 3115
+          to claim the cumulative &sect;481(a) catch-up adjustment in the
+          current year &mdash; no amended returns required.
+        </p>
+      </div>
+      <!-- service card 3 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">3</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">New Construction</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          Ground-up builds and major renovations. Direct cost
+          identification from contractor pay applications, change orders,
+          and as-built drawings.
+        </p>
+      </div>
+      <!-- service card 4 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">4</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">Partial Asset Dispositions</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          Tangible-property regulation (&sect;1.263(a)-3) studies to
+          recognize loss on retired components and avoid recapture
+          surprises.
+        </p>
+      </div>
+      <!-- service card 5 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">5</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">Form 3115 Preparation</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          Change-in-method filings done right. Includes &sect;481(a)
+          calculation, statements, and dual-copy filing instructions for
+          your tax preparer.
+        </p>
+      </div>
+      <!-- service card 6 -->
+      <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:border-gold transition">
+        <div class="w-11 h-11 rounded-lg bg-navy text-gold flex items-center justify-center font-serif text-xl">6</div>
+        <h3 class="mt-5 font-serif text-xl text-navy">IRS Audit Support</h3>
+        <p class="mt-2 text-sm text-ink/70">
+          Should your study be examined, we stand behind our workpapers
+          and coordinate with your tax representative through the
+          examination cycle.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PROCESS ============== -->
+<section id="process" class="py-20 bg-cream">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Our Process</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline-center">
+        From Site Visit to IRS-Ready Report
+      </h2>
+      <p class="mt-6 text-lg text-ink/75">
+        Five disciplined steps. Every study aligns with the IRS Cost
+        Segregation Audit Techniques Guide and the 13 quality elements
+        of Publication 5653.
+      </p>
+    </div>
+
+    <ol class="mt-14 grid md:grid-cols-5 gap-4 text-center">
+      <li class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-gold text-navy flex items-center justify-center mx-auto font-serif text-lg">1</div>
+        <h3 class="mt-4 font-semibold text-navy">Engagement &amp; Data</h3>
+        <p class="mt-2 text-xs text-ink/65">Engagement letter, conflict check, document request.</p>
+      </li>
+      <li class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-gold text-navy flex items-center justify-center mx-auto font-serif text-lg">2</div>
+        <h3 class="mt-4 font-semibold text-navy">Site Visit</h3>
+        <p class="mt-2 text-xs text-ink/65">P.E.-led inspection. Photographic and dimensional evidence.</p>
+      </li>
+      <li class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-gold text-navy flex items-center justify-center mx-auto font-serif text-lg">3</div>
+        <h3 class="mt-4 font-semibold text-navy">Engineering Takeoff</h3>
+        <p class="mt-2 text-xs text-ink/65">Quantity survey, RSMeans cost data, indirect-cost allocation.</p>
+      </li>
+      <li class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-gold text-navy flex items-center justify-center mx-auto font-serif text-lg">4</div>
+        <h3 class="mt-4 font-semibold text-navy">Tax Reclassification</h3>
+        <p class="mt-2 text-xs text-ink/65">CPA-led MACRS classification, &sect;481(a) calc, Form 3115 if needed.</p>
+      </li>
+      <li class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-gold text-navy flex items-center justify-center mx-auto font-serif text-lg">5</div>
+        <h3 class="mt-4 font-semibold text-navy">Report &amp; Delivery</h3>
+        <p class="mt-2 text-xs text-ink/65">Two-principal QC sign-off. Delivery to you and your CPA.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============== CASE STUDIES ============== -->
+<section id="case-studies" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Case Studies</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline">Representative Engagements</h2>
+      <p class="mt-6 text-lg text-ink/75">
+        Sample studies illustrating typical reclassification and first-year
+        savings. <span class="italic text-ink/50">[Sample data &mdash; replace with actual case studies once available.]</span>
+      </p>
+    </div>
+
+    <!-- Alpine x-data holds the modal state. Click a card -> open modal -->
+    <div x-data="{ open:false, cs:null,
+      cases: [
+        { type:'Multifamily', name:'94-Unit Apartment Community', loc:'Las Vegas, NV', basis:14500000,
+          reclass:0.29, savingsY1:1500000, summary:'Garden-style multifamily. Heavy land-improvements (pool, parking, landscaping). 5/15-year accelerated.' },
+        { type:'Retail', name:'Anchored Strip Center', loc:'Henderson, NV', basis:6800000,
+          reclass:0.24, savingsY1:540000, summary:'Multi-tenant retail with site work, signage, and tenant improvements identified as 5- and 15-year property.' },
+        { type:'Office', name:'Class B Office Building', loc:'Reno, NV', basis:9200000,
+          reclass:0.20, savingsY1:610000, summary:'Three-story office. Carpet, decorative lighting, and millwork reclassified. Roof replacement partial-disposition study included.' },
+        { type:'Industrial', name:'Distribution Warehouse', loc:'North Las Vegas, NV', basis:11800000,
+          reclass:0.18, savingsY1:705000, summary:'Tilt-up distribution facility. Specialty electrical for warehouse equipment, dock levelers, and yard improvements.' },
+        { type:'Hospitality', name:'Limited-Service Hotel', loc:'Henderson, NV', basis:18500000,
+          reclass:0.34, savingsY1:2100000, summary:'112-key hotel. Heavy 5-year FF&amp;E and decorative finishes drive aggressive reclassification.' },
+        { type:'Multifamily', name:'Build-to-Rent Townhomes', loc:'Las Vegas, NV', basis:22000000,
+          reclass:0.30, savingsY1:2450000, summary:'New-construction BTR community. Direct-cost study with contractor pay-app integration.' },
+        { type:'Retail', name:'Standalone QSR (Restaurant)', loc:'Henderson, NV', basis:2400000,
+          reclass:0.32, savingsY1:285000, summary:'Quick-service drive-through restaurant. Decorative finishes, kitchen equipment, drive lanes &amp; signage.' },
+        { type:'Medical', name:'Medical Office Condo', loc:'Las Vegas, NV', basis:3900000,
+          reclass:0.26, savingsY1:380000, summary:'Two-tenant medical condo. Specialty plumbing &amp; electrical for exam rooms, decorative finishes.' },
+      ],
+      fmt(n){ return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}); }
+    }">
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <template x-for="(c, i) in cases" :key="i">
+          <button @click="cs=c; open=true"
+                  class="text-left bg-white border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:border-gold transition">
+            <div class="text-[10px] uppercase tracking-widest text-gold-2" x-text="c.type"></div>
+            <h3 class="mt-2 font-serif text-lg text-navy" x-text="c.name"></h3>
+            <p class="text-xs text-ink/55 mt-1" x-text="c.loc"></p>
+            <dl class="mt-4 grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <dt class="text-ink/50">Basis</dt>
+                <dd class="font-semibold text-navy" x-text="fmt(c.basis)"></dd>
+              </div>
+              <div>
+                <dt class="text-ink/50">Reclass.</dt>
+                <dd class="font-semibold text-navy" x-text="(c.reclass*100).toFixed(0)+'%'"></dd>
+              </div>
+              <div class="col-span-2 mt-2 pt-2 border-t">
+                <dt class="text-ink/50">Yr-1 Savings</dt>
+                <dd class="font-serif text-xl text-gold-2" x-text="fmt(c.savingsY1)"></dd>
+              </div>
+            </dl>
+          </button>
+        </template>
+      </div>
+
+      <!-- Modal -->
+      <div x-show="open" x-cloak x-transition.opacity
+           class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+           @click.self="open=false" @keydown.escape.window="open=false">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-7 relative" x-show="open" x-transition>
+          <button @click="open=false" class="absolute top-4 right-4 text-ink/50 hover:text-navy">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" d="M6 6L18 18M6 18L18 6"/></svg>
+          </button>
+          <template x-if="cs">
+            <div>
+              <p class="text-[10px] uppercase tracking-widest text-gold-2" x-text="cs.type"></p>
+              <h3 class="mt-1 font-serif text-2xl text-navy" x-text="cs.name"></h3>
+              <p class="text-sm text-ink/60" x-text="cs.loc"></p>
+              <p class="mt-4 text-sm text-ink/80" x-text="cs.summary"></p>
+              <div class="mt-6 grid grid-cols-3 gap-3">
+                <div class="bg-cream rounded-lg p-3 text-center">
+                  <div class="text-[10px] uppercase tracking-widest text-gold-2">Basis</div>
+                  <div class="font-serif text-lg text-navy" x-text="fmt(cs.basis)"></div>
+                </div>
+                <div class="bg-cream rounded-lg p-3 text-center">
+                  <div class="text-[10px] uppercase tracking-widest text-gold-2">Reclass.</div>
+                  <div class="font-serif text-lg text-navy" x-text="(cs.reclass*100).toFixed(0)+'%'"></div>
+                </div>
+                <div class="bg-navy rounded-lg p-3 text-center text-white">
+                  <div class="text-[10px] uppercase tracking-widest text-gold">Yr-1 Savings</div>
+                  <div class="font-serif text-lg" x-text="fmt(cs.savingsY1)"></div>
+                </div>
+              </div>
+              <p class="mt-5 text-[11px] text-ink/45 italic">
+                Sample data, illustrative only. Actual results vary by property,
+                cost basis, applicable bonus depreciation rules, and the
+                taxpayer&rsquo;s tax position.
+              </p>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ABOUT ============== -->
+<section id="about" class="py-20 bg-navy text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-start">
+    <div>
+      <p class="text-xs uppercase tracking-[0.25em] text-gold">About the Firm</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl heading-underline">Two disciplines. One report.</h2>
+      <p class="mt-6 text-lg text-white/80">
+        Lake &amp; Lederman pairs CPA-grade tax expertise with
+        engineering rigor on every engagement. Each study is signed by
+        both a licensed Certified Public Accountant and a licensed
+        Professional Engineer &mdash; not many firms can say the same.
+      </p>
+      <ul class="mt-8 space-y-3 text-white/85 text-sm">
+        <li class="flex gap-3"><span class="text-gold">&#10003;</span> Member-aligned with the American Society of Cost Segregation Professionals (ASCSP).</li>
+        <li class="flex gap-3"><span class="text-gold">&#10003;</span> Reports built to the IRS Pub 5653 13-element framework.</li>
+        <li class="flex gap-3"><span class="text-gold">&#10003;</span> Two-principal QC sign-off on every deliverable.</li>
+        <li class="flex gap-3"><span class="text-gold">&#10003;</span> Local: Henderson, NV &mdash; site visits across Clark and Washoe Counties.</li>
+      </ul>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-6">
+      <!-- Bio card 1 -->
+      <article class="bg-navy-2 rounded-xl p-6 border border-white/10">
+        <!-- Placeholder avatar -->
+        <div class="w-16 h-16 rounded-full bg-gold flex items-center justify-center font-serif text-2xl text-navy">GL</div>
+        <h3 class="mt-4 font-serif text-xl">Garett Lake, CPA</h3>
+        <p class="text-xs uppercase tracking-widest text-gold mt-1">Co-Founder &middot; Tax Principal</p>
+        <p class="mt-4 text-sm text-white/80">
+          [PLACEHOLDER: Years of experience, prior firms, areas of focus,
+          notable engagements, education. Replace this paragraph with
+          Garett&rsquo;s bio once finalized.]
+        </p>
+        <dl class="mt-5 grid grid-cols-2 gap-2 text-xs">
+          <div><dt class="text-white/50">License</dt><dd>NV CPA #[PLACEHOLDER]</dd></div>
+          <div><dt class="text-white/50">Education</dt><dd>[PLACEHOLDER]</dd></div>
+          <div><dt class="text-white/50">Memberships</dt><dd>AICPA, NSCPA, ASCSP</dd></div>
+          <div><dt class="text-white/50">Email</dt><dd>[PLACEHOLDER]</dd></div>
+        </dl>
+      </article>
+
+      <!-- Bio card 2 -->
+      <article class="bg-navy-2 rounded-xl p-6 border border-white/10">
+        <div class="w-16 h-16 rounded-full bg-gold flex items-center justify-center font-serif text-2xl text-navy">BL</div>
+        <h3 class="mt-4 font-serif text-xl">Ben Lederman, P.E.</h3>
+        <p class="text-xs uppercase tracking-widest text-gold mt-1">Co-Founder &middot; Engineering Principal</p>
+        <p class="mt-4 text-sm text-white/80">
+          [PLACEHOLDER: Years of experience, engineering specialty
+          (civil/mechanical/structural), prior projects, certifications.
+          Replace with Ben&rsquo;s bio once finalized.]
+        </p>
+        <dl class="mt-5 grid grid-cols-2 gap-2 text-xs">
+          <div><dt class="text-white/50">License</dt><dd>NV P.E. #[PLACEHOLDER]</dd></div>
+          <div><dt class="text-white/50">Discipline</dt><dd>[PLACEHOLDER]</dd></div>
+          <div><dt class="text-white/50">Memberships</dt><dd>NSPE, ASCSP</dd></div>
+          <div><dt class="text-white/50">Email</dt><dd>[PLACEHOLDER]</dd></div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== RESOURCES ============== -->
+<section id="resources" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Resources</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline">Free Downloads &amp; References</h2>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <a href="#" class="block bg-white border rounded-xl p-5 hover:shadow-xl hover:border-gold transition">
+        <div class="text-xs text-gold-2 uppercase tracking-widest">Cheat Sheet</div>
+        <h3 class="mt-2 font-serif text-lg text-navy">Cost Seg ROI in 5 Minutes</h3>
+        <p class="mt-2 text-sm text-ink/65">One-page primer for property owners.</p>
+        <span class="mt-4 inline-block text-sm text-navy underline">Download PDF &rarr;</span>
+      </a>
+      <a href="#" class="block bg-white border rounded-xl p-5 hover:shadow-xl hover:border-gold transition">
+        <div class="text-xs text-gold-2 uppercase tracking-widest">IRS Reference</div>
+        <h3 class="mt-2 font-serif text-lg text-navy">Pub 946 Quick Reference</h3>
+        <p class="mt-2 text-sm text-ink/65">MACRS class lives at a glance.</p>
+        <span class="mt-4 inline-block text-sm text-navy underline">Download PDF &rarr;</span>
+      </a>
+      <a href="#" class="block bg-white border rounded-xl p-5 hover:shadow-xl hover:border-gold transition">
+        <div class="text-xs text-gold-2 uppercase tracking-widest">IRS Reference</div>
+        <h3 class="mt-2 font-serif text-lg text-navy">Pub 5653 Summary</h3>
+        <p class="mt-2 text-sm text-ink/65">The 13 quality elements of a defensible study.</p>
+        <span class="mt-4 inline-block text-sm text-navy underline">Download PDF &rarr;</span>
+      </a>
+      <a href="#" class="block bg-white border rounded-xl p-5 hover:shadow-xl hover:border-gold transition">
+        <div class="text-xs text-gold-2 uppercase tracking-widest">Checklist</div>
+        <h3 class="mt-2 font-serif text-lg text-navy">Document Request List</h3>
+        <p class="mt-2 text-sm text-ink/65">What we need from you to start a study.</p>
+        <span class="mt-4 inline-block text-sm text-navy underline">Download PDF &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STARTUP DASHBOARD (interactive) ============== -->
+<section id="dashboard" class="py-20 bg-cream">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Internal Tool</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline">Business Startup Dashboard</h2>
+      <p class="mt-6 text-lg text-ink/75">
+        Track every requirement to launch the firm. Check items as you
+        complete them &mdash; the progress bar updates in real time.
+        Your progress is saved in this browser only.
+      </p>
+    </div>
+
+    <div x-data="dashboard()" x-init="init()" class="mt-12 grid lg:grid-cols-3 gap-8 items-start">
+
+      <!-- Sidebar: progress + filters -->
+      <aside class="lg:col-span-1 lg:sticky lg:top-24 bg-white border rounded-xl p-6 space-y-5">
+        <div>
+          <div class="flex justify-between text-sm font-medium text-navy">
+            <span>Overall progress</span>
+            <span x-text="completed + ' / ' + total"></span>
+          </div>
+          <div class="mt-2 w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-gold transition-all" :style="`width:${pct}%`"></div>
+          </div>
+          <div class="mt-1 text-right text-xs text-ink/60" x-text="pct + '% complete'"></div>
+        </div>
+
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gold-2 mb-2">Filter by section</p>
+          <div class="space-y-1">
+            <template x-for="s in sections" :key="s">
+              <button @click="active = (active===s ? null : s)"
+                      class="w-full text-left text-sm px-3 py-2 rounded-md transition"
+                      :class="active===s ? 'bg-navy text-white' : 'hover:bg-cream text-ink/80'">
+                <span x-text="s"></span>
+              </button>
+            </template>
+            <button @click="active=null" class="w-full text-left text-xs text-gold-2 underline mt-2">Show all</button>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t">
+          <p class="text-xs uppercase tracking-widest text-gold-2 mb-2">Document Upload</p>
+          <p class="text-xs text-ink/60 mb-3">Attach key launch documents (employment review, COI, license cert, etc.). Demo only &mdash; files are not transmitted.</p>
+          <label class="block border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gold cursor-pointer">
+            <input type="file" multiple class="hidden" @change="onUpload($event)">
+            <span class="text-sm text-ink/60">Click to choose files&hellip;</span>
+          </label>
+          <ul class="mt-3 space-y-1 text-xs text-ink/70">
+            <template x-for="(f,i) in files" :key="i">
+              <li class="flex justify-between"><span x-text="f.name"></span><span x-text="(f.size/1024).toFixed(0)+' KB'"></span></li>
+            </template>
+          </ul>
+        </div>
+
+        <button @click="reset()"
+                class="w-full text-xs text-ink/50 underline">Reset checklist</button>
+      </aside>
+
+      <!-- Checklist -->
+      <div class="lg:col-span-2 space-y-6">
+        <template x-for="s in sections" :key="s">
+          <section x-show="!active || active===s" class="bg-white rounded-xl border p-6">
+            <h3 class="font-serif text-xl text-navy" x-text="s"></h3>
+            <ul class="mt-4 divide-y">
+              <template x-for="item in itemsBySection(s)" :key="item.id">
+                <li class="py-3 flex gap-3 items-start">
+                  <input type="checkbox" x-model="item.done" @change="save()"
+                         class="mt-1 w-5 h-5 accent-gold flex-none">
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-navy" :class="item.done ? 'line-through opacity-60' : ''" x-text="item.label"></div>
+                    <div class="text-xs text-ink/60 mt-1" x-text="item.detail"></div>
+                    <div class="mt-1 flex gap-2 text-[10px] uppercase tracking-widest">
+                      <span class="text-gold-2" x-text="'Owner: '+item.owner"></span>
+                      <span :class="item.priority==='Blocker' ? 'text-red-700 font-bold'
+                                  : item.priority==='High' ? 'text-navy font-semibold'
+                                  : 'text-ink/50'"
+                            x-text="item.priority"></span>
+                    </div>
+                  </div>
+                </li>
+              </template>
+            </ul>
+          </section>
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== BLOG ============== -->
+<section id="blog" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Insights</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline">Blog &amp; Articles</h2>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article class="bg-white border rounded-xl overflow-hidden hover:shadow-xl hover:border-gold transition">
+        <div class="h-32 bg-gradient-to-br from-navy to-navy-2"></div>
+        <div class="p-5">
+          <div class="text-[10px] uppercase tracking-widest text-gold-2">Tax Strategy</div>
+          <h3 class="mt-2 font-serif text-lg text-navy">Bonus Depreciation Phase-Down: What Owners Need to Know</h3>
+          <p class="mt-2 text-sm text-ink/65">A look at the TCJA bonus schedule and how the phase-down changes the cost-seg payback math year over year.</p>
+          <a href="#" class="mt-4 inline-block text-sm text-navy underline">Read article &rarr;</a>
+        </div>
+      </article>
+      <article class="bg-white border rounded-xl overflow-hidden hover:shadow-xl hover:border-gold transition">
+        <div class="h-32 bg-gradient-to-br from-gold to-gold-2"></div>
+        <div class="p-5">
+          <div class="text-[10px] uppercase tracking-widest text-gold-2">IRS Compliance</div>
+          <h3 class="mt-2 font-serif text-lg text-navy">The 13 Quality Elements of a Defensible Study</h3>
+          <p class="mt-2 text-sm text-ink/65">Walking through each element of IRS Pub 5653 and how a properly executed study addresses them.</p>
+          <a href="#" class="mt-4 inline-block text-sm text-navy underline">Read article &rarr;</a>
+        </div>
+      </article>
+      <article class="bg-white border rounded-xl overflow-hidden hover:shadow-xl hover:border-gold transition">
+        <div class="h-32 bg-gradient-to-br from-navy-2 to-gold-2"></div>
+        <div class="p-5">
+          <div class="text-[10px] uppercase tracking-widest text-gold-2">Look-Back Studies</div>
+          <h3 class="mt-2 font-serif text-lg text-navy">Form 3115 Demystified: Recovering Missed Depreciation</h3>
+          <p class="mt-2 text-sm text-ink/65">How a current-year &sect;481(a) adjustment lets you claim missed depreciation without amending prior returns.</p>
+          <a href="#" class="mt-4 inline-block text-sm text-navy underline">Read article &rarr;</a>
+        </div>
+      </article>
+      <article class="bg-white border rounded-xl overflow-hidden hover:shadow-xl hover:border-gold transition">
+        <div class="h-32 bg-gradient-to-br from-cream to-gold"></div>
+        <div class="p-5">
+          <div class="text-[10px] uppercase tracking-widest text-gold-2">Property Type Spotlight</div>
+          <h3 class="mt-2 font-serif text-lg text-navy">Why Multifamily Sees the Highest Reclassification Rates</h3>
+          <p class="mt-2 text-sm text-ink/65">Land improvements, appliances, finishes, and unit-by-unit FF&amp;E drive multifamily ratios well above commercial baselines.</p>
+          <a href="#" class="mt-4 inline-block text-sm text-navy underline">Read article &rarr;</a>
+        </div>
+      </article>
+      <article class="bg-white border rounded-xl overflow-hidden hover:shadow-xl hover:border-gold transition">
+        <div class="h-32 bg-gradient-to-br from-navy to-gold"></div>
+        <div class="p-5">
+          <div class="text-[10px] uppercase tracking-widest text-gold-2">Nevada-Focused</div>
+          <h3 class="mt-2 font-serif text-lg text-navy">Cost Seg Math for Las Vegas Multifamily Investors</h3>
+          <p class="mt-2 text-sm text-ink/65">A worked example using Henderson and Las Vegas valuation conventions, with realistic land allocation ratios.</p>
+          <a href="#" class="mt-4 inline-block text-sm text-navy underline">Read article &rarr;</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COMPLIANCE ============== -->
+<section id="compliance" class="py-20 bg-navy text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-8 items-start">
+    <div class="lg:col-span-1">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold">Trust &amp; Compliance</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl heading-underline">Built for Professional Trust</h2>
+      <p class="mt-6 text-white/80">
+        Cost segregation is a tax position you take with the IRS. Every
+        engagement is backed by professional licensure, insurance,
+        and an audit-ready workpaper file.
+      </p>
+    </div>
+
+    <div class="lg:col-span-2 grid sm:grid-cols-2 gap-5">
+      <div class="bg-navy-2 rounded-xl p-5 border border-white/10">
+        <div class="w-10 h-10 rounded-lg bg-gold text-navy flex items-center justify-center">&#9733;</div>
+        <h3 class="mt-4 font-serif text-lg">CPA &amp; P.E. Licensure</h3>
+        <p class="mt-2 text-sm text-white/75">Active Nevada CPA license &amp; active Nevada Professional Engineer license. License copies available on request.</p>
+      </div>
+      <div class="bg-navy-2 rounded-xl p-5 border border-white/10">
+        <div class="w-10 h-10 rounded-lg bg-gold text-navy flex items-center justify-center">&#9873;</div>
+        <h3 class="mt-4 font-serif text-lg">$1M+ E&amp;O Insurance</h3>
+        <p class="mt-2 text-sm text-white/75">Professional liability coverage with retroactive date. Certificate of insurance provided to clients on request.</p>
+      </div>
+      <div class="bg-navy-2 rounded-xl p-5 border border-white/10">
+        <div class="w-10 h-10 rounded-lg bg-gold text-navy flex items-center justify-center">&#10004;</div>
+        <h3 class="mt-4 font-serif text-lg">ASCSP Aligned</h3>
+        <p class="mt-2 text-sm text-white/75">Methodology and report format align with the ASCSP Quality Control Statements and IRS ATG.</p>
+      </div>
+      <div class="bg-navy-2 rounded-xl p-5 border border-white/10">
+        <div class="w-10 h-10 rounded-lg bg-gold text-navy flex items-center justify-center">&#128274;</div>
+        <h3 class="mt-4 font-serif text-lg">FTC Safeguards / WISP</h3>
+        <p class="mt-2 text-sm text-white/75">Written Information Security Plan in place. Encrypted storage and MFA on all client systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONTACT ============== -->
+<section id="contact" class="py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold-2">Contact</p>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-navy heading-underline-center">Schedule a Free Property Review</h2>
+      <p class="mt-6 text-ink/75">15-minute call. We&rsquo;ll review your property type, basis, and placed-in-service year, and tell you if a study makes sense.</p>
+    </div>
+
+    <!--
+      Netlify form. The data-netlify="true" attribute tells Netlify
+      to capture submissions automatically (no backend code required).
+      The hidden bot-field discourages spam submissions.
+    -->
+    <form name="contact" method="POST" data-netlify="true"
+          netlify-honeypot="bot-field"
+          enctype="multipart/form-data"
+          class="mt-12 bg-white border rounded-2xl shadow-sm p-6 sm:p-8 grid sm:grid-cols-2 gap-5">
+      <input type="hidden" name="form-name" value="contact">
+      <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Name</span>
+        <input required type="text" name="name"
+               class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Email</span>
+        <input required type="email" name="email"
+               class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Phone</span>
+        <input type="tel" name="phone"
+               class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Property type</span>
+        <select name="property_type"
+                class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+          <option>Multifamily</option><option>Commercial / Office</option>
+          <option>Retail</option><option>Industrial</option>
+          <option>Hospitality</option><option>Medical</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Property basis (purchase price)</span>
+        <input type="text" name="basis" placeholder="e.g. $4,500,000"
+               class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-navy">Placed-in-service year</span>
+        <input type="text" name="pis_year" placeholder="e.g. 2024"
+               class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none">
+      </label>
+      <label class="sm:col-span-2 block">
+        <span class="text-sm font-medium text-navy">Tell us about the property</span>
+        <textarea name="message" rows="4"
+                  class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 text-sm focus:border-gold focus:outline-none"></textarea>
+      </label>
+      <label class="sm:col-span-2 block">
+        <span class="text-sm font-medium text-navy">Attach documents (optional &mdash; settlement statement, dep schedule)</span>
+        <input type="file" name="attachments" multiple
+               class="mt-1 block w-full text-sm">
+      </label>
+      <button type="submit"
+              class="sm:col-span-2 px-6 py-3 bg-navy text-white rounded-md font-semibold hover:bg-navy-2 transition">
+        Request Property Review
+      </button>
+    </form>
+
+    <p class="mt-4 text-xs text-ink/50 text-center">
+      Submissions are received and stored by Netlify Forms. We respond
+      within one business day. Your data is never sold.
+    </p>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="bg-navy-2 text-white/70 pt-14 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-3">
+        <svg viewBox="0 0 40 40" class="w-9 h-9"><rect width="40" height="40" rx="6" fill="#C8A84B"/><text x="50%" y="55%" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#0B2545" dominant-baseline="middle">L&amp;L</text></svg>
+        <span class="text-white font-serif"><span class="block text-sm font-semibold">Lake &amp; Lederman</span><span class="block text-[10px] tracking-widest text-gold uppercase">Cost Segregation</span></span>
+      </div>
+      <p class="mt-5 text-sm max-w-md">
+        Henderson, Nevada-based cost segregation firm pairing
+        CPA-grade tax expertise with engineering rigor. Serving real
+        estate investors across Nevada and the Mountain West.
+      </p>
+      <p class="mt-5 text-xs">
+        Lake &amp; Lederman PLLC <span class="text-white/40">(working name)</span><br>
+        Henderson, NV<br>
+        [PLACEHOLDER ADDRESS]<br>
+        [PLACEHOLDER PHONE] &middot; [PLACEHOLDER EMAIL]
+      </p>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white">Firm</h4>
+      <ul class="mt-3 space-y-1 text-sm">
+        <li><a href="#about"      class="hover:text-gold">About</a></li>
+        <li><a href="#services"   class="hover:text-gold">Services</a></li>
+        <li><a href="#process"    class="hover:text-gold">Process</a></li>
+        <li><a href="#case-studies" class="hover:text-gold">Case Studies</a></li>
+        <li><a href="#compliance" class="hover:text-gold">Compliance</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white">Resources</h4>
+      <ul class="mt-3 space-y-1 text-sm">
+        <li><a href="#resources"  class="hover:text-gold">Free Downloads</a></li>
+        <li><a href="#blog"       class="hover:text-gold">Blog</a></li>
+        <li><a href="#dashboard"  class="hover:text-gold">Internal Dashboard</a></li>
+        <li><a href="#contact"    class="hover:text-gold">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-white/10 flex flex-wrap gap-4 justify-between text-xs">
+    <span>&copy; <span x-data x-text="new Date().getFullYear()"></span> Lake &amp; Lederman PLLC. All rights reserved.</span>
+    <div class="space-x-4">
+      <a href="#" class="hover:text-gold">Privacy Policy</a>
+      <a href="#" class="hover:text-gold">Terms of Service</a>
+      <a href="#" class="hover:text-gold">Disclosures</a>
+    </div>
+  </div>
+  <p class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 text-[11px] text-white/40">
+    The information on this site is for general informational purposes
+    only and is not legal, tax, accounting, or investment advice.
+    Estimates produced by the calculator are illustrative and not a
+    substitute for a qualified cost segregation study.
+  </p>
+</footer>
+
+<!-- ============== ALPINE: Dashboard data + persistence ============== -->
+<script>
+  // The Alpine "component" for the interactive startup dashboard.
+  // Data persists in localStorage so progress survives page reloads.
+  function dashboard() {
+    const STORAGE_KEY = 'll_dashboard_v1';
+
+    const seed = [
+      // 1. Risk Gate
+      { id:'rg1', section:'Pre-Launch Risk Gate', label:'Pull employment agreement & firm policy manual', detail:'Identify outside-practice / moonlighting / non-solicit clauses.', owner:'Garett', priority:'Blocker', done:false },
+      { id:'rg2', section:'Pre-Launch Risk Gate', label:'Engage NV employment attorney for review', detail:'~$300–700 for 1 hr. Documentation in firm file.', owner:'Garett', priority:'High', done:false },
+      { id:'rg3', section:'Pre-Launch Risk Gate', label:'Disclose venture in writing to current employer; obtain written acknowledgement', detail:'Dated letter or email. Save in firm records.', owner:'Garett', priority:'Blocker', done:false },
+      { id:'rg4', section:'Pre-Launch Risk Gate', label:'Confirm Ben’s NV P.E. license active & in good standing', detail:'NSBPELS lookup + cert copy.', owner:'Ben', priority:'High', done:false },
+      { id:'rg5', section:'Pre-Launch Risk Gate', label:'Conflict-check current firm’s top 50 active clients', detail:'Refresh quarterly while still employed there.', owner:'Garett', priority:'High', done:false },
+
+      // 2. Entity Formation
+      { id:'ef1', section:'Entity Formation (Nevada PLLC)', label:'Choose final firm name; confirm NV SOS + .com availability', detail:'SilverFlume name search.', owner:'Both', priority:'High', done:false },
+      { id:'ef2', section:'Entity Formation (Nevada PLLC)', label:'Decide structure: single multi-prof PLLC vs. two-entity JV', detail:'Discuss with attorney. Document decision in 1-pg memo.', owner:'Both', priority:'High', done:false },
+      { id:'ef3', section:'Entity Formation (Nevada PLLC)', label:'File Articles of Organization with NV SOS', detail:'~$425+ at filing (incl. State Business License & Initial List).', owner:'Garett', priority:'High', done:false },
+      { id:'ef4', section:'Entity Formation (Nevada PLLC)', label:'Obtain federal EIN (IRS SS-4)', detail:'Free; instant online.', owner:'Garett', priority:'High', done:false },
+      { id:'ef5', section:'Entity Formation (Nevada PLLC)', label:'Sign Operating Agreement', detail:'Ownership %, draws, IP, departure, dissolution.', owner:'Both', priority:'High', done:false },
+      { id:'ef6', section:'Entity Formation (Nevada PLLC)', label:'Henderson business license', detail:'City of Henderson Business License office. Verify category code.', owner:'Garett', priority:'High', done:false },
+
+      // 3. Licensing
+      { id:'lc1', section:'Professional Licensing & Firm Registration', label:'Confirm whether NV Board of Accountancy firm permit is required', detail:'Get the answer in writing.', owner:'Garett', priority:'High', done:false },
+      { id:'lc2', section:'Professional Licensing & Firm Registration', label:'Confirm whether NSBPELS engineering firm registration is required', detail:'Cost-seg = engineering analysis; assume yes until told otherwise.', owner:'Ben', priority:'High', done:false },
+      { id:'lc3', section:'Professional Licensing & Firm Registration', label:'Notify each Board of new practice setting', detail:'Both NV CPA Board and NSBPELS.', owner:'Both', priority:'Med', done:false },
+
+      // 4. ASCSP
+      { id:'as1', section:'ASCSP Membership', label:'Apply for ASCSP membership', detail:'Annual dues. Member-tier first.', owner:'Both', priority:'Med', done:false },
+      { id:'as2', section:'ASCSP Membership', label:'Adopt ASCSP Quality Control Statements as firm policy', detail:'Reference in engagement letters.', owner:'Both', priority:'High', done:false },
+      { id:'as3', section:'ASCSP Membership', label:'Begin Senior / CCSP certification path', detail:'12–24 month plan.', owner:'Both', priority:'Med', done:false },
+
+      // 5. Insurance
+      { id:'in1', section:'Insurance & Risk Transfer', label:'Request E&O quotes ($1M/$2M)', detail:'CAMICO, CNA, Hiscox, Travelers. Specify cost-seg engineering studies.', owner:'Garett', priority:'Blocker', done:false },
+      { id:'in2', section:'Insurance & Risk Transfer', label:'Bind E&O policy', detail:'Retroactive date = PLLC formation.', owner:'Garett', priority:'Blocker', done:false },
+      { id:'in3', section:'Insurance & Risk Transfer', label:'Bind General Liability + BOP', detail:'Includes home-office and site-visit GL.', owner:'Both', priority:'High', done:false },
+      { id:'in4', section:'Insurance & Risk Transfer', label:'Bind Cyber Liability', detail:'Required by many client agreements.', owner:'Garett', priority:'High', done:false },
+
+      // 6. IRS
+      { id:'ir1', section:'IRS Compliance', label:'Build firm-standard report template covering 13 quality elements', detail:'One Word/InDesign master + Excel cost-allocation workbook.', owner:'Both', priority:'High', done:false },
+      { id:'ir2', section:'IRS Compliance', label:'Build QC checklist mapping report sections to 13 elements', detail:'Reviewer signs and dates before release.', owner:'Both', priority:'High', done:false },
+      { id:'ir3', section:'IRS Compliance', label:'Build Form 3115 template with §481(a) calc', detail:'DCN 7 (verify). Two-copy filing.', owner:'Garett', priority:'High', done:false },
+      { id:'ir4', section:'IRS Compliance', label:'Adopt Circular 230 disclosures & written tax-advice standards', detail:'Garett signs tax positions; Ben signs engineering analysis.', owner:'Garett', priority:'High', done:false },
+
+      // 7. Engagement docs
+      { id:'eg1', section:'Client Engagement Documents', label:'Engagement letter template (attorney-reviewed)', detail:'Scope, fee, indemnification, IRS-controversy clause, venue.', owner:'Garett+atty', priority:'High', done:false },
+      { id:'eg2', section:'Client Engagement Documents', label:'Mutual NDA template', detail:'For pre-engagement document exchange.', owner:'Garett', priority:'Med', done:false },
+      { id:'eg3', section:'Client Engagement Documents', label:'Conflict-check form & log', detail:'Before each engagement.', owner:'Garett', priority:'High', done:false },
+
+      // 8. Software
+      { id:'sw1', section:'Software & Tools', label:'License RSMeans Online', detail:'Industry-standard cost data; cited in studies.', owner:'Ben', priority:'High', done:false },
+      { id:'sw2', section:'Software & Tools', label:'Choose cost-seg software OR Excel workbook', detail:'KBKG, Bloomberg Tax Fixed Assets, Sage, or proprietary.', owner:'Both', priority:'High', done:false },
+      { id:'sw3', section:'Software & Tools', label:'Document management with versioning + MFA', detail:'Google Workspace / M365 / Box.', owner:'Garett', priority:'High', done:false },
+      { id:'sw4', section:'Software & Tools', label:'Engagement signing platform', detail:'DocuSign or Adobe Acrobat Sign.', owner:'Garett', priority:'Med', done:false },
+
+      // 9. Operations
+      { id:'op1', section:'Operations & QC', label:'Document study lifecycle as written process map', detail:'Inquiry → … → archive.', owner:'Both', priority:'High', done:false },
+      { id:'op2', section:'Operations & QC', label:'Two-principal QC sign-off on every report', detail:'Each principal certifies in their discipline.', owner:'Both', priority:'High', done:false },
+      { id:'op3', section:'Operations & QC', label:'Site-visit safety / PPE protocol + photo standard', detail:'≥50 photos per site; EXIF intact; building map keyed.', owner:'Ben', priority:'Med', done:false },
+
+      // 10. Banking/Tax
+      { id:'bk1', section:'Banking & Internal Tax', label:'Open dedicated business bank accounts under PLLC EIN', detail:'No commingling with personal funds.', owner:'Garett', priority:'High', done:false },
+      { id:'bk2', section:'Banking & Internal Tax', label:'Configure QuickBooks Online', detail:'Chart of accounts by service line.', owner:'Garett', priority:'High', done:false },
+      { id:'bk3', section:'Banking & Internal Tax', label:'Decide tax treatment (partnership vs. S-corp)', detail:'Re-evaluate when net income > reasonable-comp threshold.', owner:'Garett', priority:'Med', done:false },
+
+      // 11. Marketing
+      { id:'mk1', section:'Marketing & BD', label:'Final logo + brand standards', detail:'Letterhead, business card, report cover.', owner:'Both', priority:'High', done:false },
+      { id:'mk2', section:'Marketing & BD', label:'Domain + Google Workspace email', detail:'@lakeledermancostseg.com or final firm name.', owner:'Garett', priority:'High', done:false },
+      { id:'mk3', section:'Marketing & BD', label:'Launch website on Netlify', detail:'This site. Connect domain.', owner:'Both', priority:'High', done:false },
+      { id:'mk4', section:'Marketing & BD', label:'Top-50 referral list (CRE brokers, RE attys, syndicators)', detail:'Personalized intro sequence.', owner:'Both', priority:'High', done:false },
+
+      // 13. Cyber
+      { id:'cy1', section:'Records, Data Security & Cyber', label:'Written Information Security Plan (WISP)', detail:'FTC Safeguards / IRS Pub 5708 template.', owner:'Garett', priority:'Blocker', done:false },
+      { id:'cy2', section:'Records, Data Security & Cyber', label:'MFA on all firm accounts', detail:'Email, banking, software, document storage.', owner:'Both', priority:'High', done:false },
+      { id:'cy3', section:'Records, Data Security & Cyber', label:'Encrypted laptop / phone (FileVault / BitLocker)', detail:'Verified before client data lands on device.', owner:'Both', priority:'High', done:false },
+    ];
+
+    return {
+      items: [],
+      files: [],
+      active: null,
+      get sections() { return [...new Set(this.items.map(i => i.section))]; },
+      get total() { return this.items.length; },
+      get completed() { return this.items.filter(i => i.done).length; },
+      get pct() { return this.total === 0 ? 0 : Math.round(100 * this.completed / this.total); },
+      itemsBySection(s) { return this.items.filter(i => i.section === s); },
+      init() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (saved && Array.isArray(saved) && saved.length === seed.length) {
+            // map saved 'done' state onto seed
+            const map = new Map(saved.map(s => [s.id, !!s.done]));
+            this.items = seed.map(it => ({ ...it, done: map.get(it.id) || false }));
+          } else {
+            this.items = seed.map(it => ({ ...it }));
+          }
+        } catch (e) { this.items = seed.map(it => ({ ...it })); }
+      },
+      save() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(
+            this.items.map(({ id, done }) => ({ id, done }))
+          ));
+        } catch (e) { /* localStorage may be disabled */ }
+      },
+      reset() {
+        if (!confirm('Reset all checklist items?')) return;
+        this.items.forEach(i => i.done = false);
+        this.save();
+      },
+      onUpload(e) {
+        const f = Array.from(e.target.files || []);
+        this.files = [...this.files, ...f];
+      },
+    };
+  }
+</script>
+
+</body>
+</html>
